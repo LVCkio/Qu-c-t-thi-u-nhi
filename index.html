@@ -697,8 +697,14 @@ function initDrawHeart() {
   const hc = $('drawHeartCanvas');
   const hCtx = hc.getContext('2d');
   hc.width = window.innerWidth; hc.height = window.innerHeight;
-  const cx = hc.width/2, cy = hc.height/2 + (window.innerWidth > 768 ? 150 : 50); 
   const size = Math.min(window.innerWidth, window.innerHeight) * 0.008; 
+  
+  const cx = hc.width/2;
+  let cy = hc.height/2 + (window.innerWidth > 768 ? 150 : 50); 
+  // Ensure the heart doesn't get cut off at the bottom of the screen
+  if (cy + size * 20 > hc.height) {
+    cy = hc.height - size * 22;
+  }
 
   function heartPath(ctx, scale, offX, offY) {
     ctx.beginPath();
