@@ -189,7 +189,7 @@
   <div id="drawHeartHint" class="absolute bottom-12 md:bottom-20 flex flex-col items-center pointer-events-none z-10 w-full text-center px-4">
     <p class="text-pink-300 font-serif italic text-lg md:text-xl animate-pulse" style="font-family: 'Playfair Display', serif;">Hãy vẽ một trái tim để mở khóa kỷ niệm...</p>
   </div>
-  <canvas id="drawHeartCanvas" class="absolute inset-0 z-50 cursor-crosshair"></canvas>
+  <canvas id="drawHeartCanvas" class="absolute inset-0 z-50 cursor-crosshair" style="touch-action: none;"></canvas>
 </div>
 
 <!-- SCREEN 3 & 4: COLLAGE & BUBBLES -->
@@ -699,17 +699,16 @@ function initSphere() {
       return { px: R + rx*R*scale*0.8, py: R + p.y*R*scale*0.8, tw: R*0.35*scale, th: R*0.35*scale*0.76, depth: rz, idx: p.idx };
     });
     proj.sort((a,b) => a.depth - b.depth);
-
-    proj.forEach(t => {
+    // Optimization: Only draw the front-most 30 images to prevent mobile lag
+    proj.slice(-30).forEach(t => {
       const img = getImg(PHOTOS[t.idx]);
       const x = t.px - t.tw/2, y = t.py - t.th/2;
+      ctx.save();
       ctx.globalAlpha = 0.3 + 0.7 * ((t.depth + 1) / 2);
-      if(img) {
-        ctx.drawImage(img, x, y, t.tw, t.th);
-      } else { 
-        ctx.fillStyle = '#ff85a1'; 
-        ctx.fillRect(x, y, t.tw, t.th); 
-      }
+      ctx.beginPath(); ctx.roundRect(x, y, t.tw, t.th, 4); ctx.clip();
+      if(img) ctx.drawImage(img, x, y, t.tw, t.th);
+      else { ctx.fillStyle = '#ff85a1'; ctx.fill(); }
+      ctx.restore();
     });
     sphereRAF = requestAnimationFrame(draw);
   }
@@ -796,10 +795,9 @@ function initDrawHeart() {
     }
   }
 
-  hc.style.touchAction = 'none';
-  hc.addEventListener('touchstart', e => { e.preventDefault(); drawingHeart=true; lastPos=null; doDraw(e); }, {passive:false});
+  hc.addEventListener('touchstart', e => { drawingHeart=true; lastPos=null; doDraw(e); }, {passive:false});
   hc.addEventListener('mousedown', e => { drawingHeart=true; lastPos=null; doDraw(e); });
-  hc.addEventListener('touchmove', e => { e.preventDefault(); doDraw(e); }, {passive:false});
+  hc.addEventListener('touchmove', doDraw, {passive:false});
   hc.addEventListener('mousemove', doDraw);
   hc.addEventListener('touchend', () => drawingHeart=false);
   hc.addEventListener('mouseup', () => drawingHeart=false);
