@@ -777,8 +777,8 @@ function initDrawHeart() {
     hCtx.stroke();
     lastPos = {x, y};
 
-    // Require them to draw roughly the perimeter of the heart
-    if(drawnLength > Math.min(window.innerWidth, window.innerHeight) * 0.45) { 
+    // The mathematical perimeter of this heart is ~101.8 * size. Require 90% of it.
+    if(drawnLength > 100 * size * 0.90) { 
       drawingHeart = false;
       hc.style.pointerEvents = 'none'; 
       hc.classList.add('heart-explode');
