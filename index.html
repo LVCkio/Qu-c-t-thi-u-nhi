@@ -129,7 +129,7 @@
 
 <!-- Audio -->
 <audio id="bgMusic" src="assets/music.mp3" loop preload="auto"></audio> 
-<audio id="voiceAudio" src="assets/voice.mp3" preload="auto"></audio> 
+<audio id="voiceNote" src="assets/voice.mp3" preload="auto"></audio> 
 
 <!-- GLOBAL CANVAS (Stars, Parallax, Trails, Shooting Stars, Photos) -->
 <canvas id="globalCanvas"></canvas>
@@ -339,7 +339,7 @@
    DATA & CONFIG
 ============================================================ */
 const PHOTOS = Array.from({ length: 68 }, (_, i) => `assets/photos/photo (${i + 1}).jpg`);
-const LOVE_LETTER = `Chúc mừng ngày Quốc tế Thiếu nhi 01-06-2026, Em Bé của anh! 🎀\n\nHôm nay là ngày của các bạn nhỏ, và em thì luôn là cô công chúa nhỏ cần được ôm ấp, chiều chuộng nhất trong lòng anh. Cảm ơn em vì đã đến, mang theo nụ cười làm bừng sáng thế giới của anh. 💕\n\nnhững bức ảnh này là những khoảnh khắc anh ngắm nhìn em và nhận ra mình may mắn đến nhường nào. Mỗi tấm ảnh là một ký ức, một nụ cười, một khoảnh khắc bình yên mà anh sẽ mãi trân trọng.\n\nDù em có lớn bao nhiêu, trước mặt anh, em vẫn mãi là em bé được quyền mè nheo, được quyền yêu thương vô điều kiện. 🌸\n\nAnh yêu em rất nhiều!`;
+const LOVE_LETTER = `Chúc mừng ngày Quốc tế Thiếu nhi 01-06-2026, Em Bé của anh! 🎀\n\nHôm nay là ngày của các bạn nhỏ, và em thì luôn là cô công chúa nhỏ cần được ôm ấp, chiều chuộng nhất trong lòng anh. Cảm ơn em vì đã đến, mang theo nụ cười làm bừng sáng thế giới của anh. 💕\n\nnhững bức ảnh này là 68 khoảnh khắc anh ngắm nhìn em và nhận ra mình may mắn đến nhường nào. Mỗi tấm ảnh là một ký ức, một nụ cười, một khoảnh khắc bình yên mà anh sẽ mãi trân trọng.\n\nDù em có lớn bao nhiêu, trước mặt anh, em vẫn mãi là em bé được quyền mè nheo, được quyền yêu thương vô điều kiện. 🌸\n\nAnh yêu em rất nhiều!`;
 
 const imgCache = new Map();
 const $ = id => document.getElementById(id);
@@ -1034,7 +1034,7 @@ function endSlide() {
     slideText.classList.add('text-white');
     
     setTimeout(() => {
-      window.location.href = "tel:+840903563176";
+      window.location.href = "tel:+84999999999";
     }, 1000);
   } else {
     currentX = 0;
@@ -1058,7 +1058,7 @@ let wasMusicPlayingBeforeVoice = false;
 
 $('btnVoiceNote').addEventListener('click', (e) => {
   e.stopPropagation(); // prevent modal click
-  const audio = $('voiceAudio');
+  const audio = $('voiceNote');
   const bgAudio = $('bgMusic');
   const svg = $('btnVoiceNote').querySelector('svg');
   
