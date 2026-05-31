@@ -718,22 +718,22 @@ function initSphere() {
 function initDrawHeart() {
   const hc = $('drawHeartCanvas');
   const hCtx = hc.getContext('2d');
-  // Force exact full-screen layout to bypass any flexbox or missing CSS issues
-  hc.style.position = 'fixed';
-  hc.style.top = '0px';
-  hc.style.left = '0px';
-  hc.style.width = '100vw';
-  hc.style.height = '100vh';
-
-  hc.width = window.innerWidth; 
-  hc.height = window.innerHeight;
   
-  // Base size of the heart
-  let size = Math.min(window.innerWidth, window.innerHeight) * (window.innerWidth > 768 ? 0.007 : 0.008); 
+  hc.style = ''; // Remove any inline styles we added
+  hc.width = window.innerWidth; hc.height = window.innerHeight;
   
-  const cx = window.innerWidth / 2;
-  // Center it vertically.
-  let cy = window.innerHeight / 2; 
+  // Make heart slightly smaller on desktop to fit nicely with the sphere
+  const size = Math.min(window.innerWidth, window.innerHeight) * (window.innerWidth > 768 ? 0.006 : 0.008); 
+  
+  const cx = hc.width/2;
+  // Move it closer to the center on desktop
+  let cy = hc.height/2 + (window.innerWidth > 768 ? 80 : 50); 
+  
+  // Guarantee padding from bottom edge
+  const maxHeartY = cy + size * 17.5; 
+  if (maxHeartY > hc.height - 20) {
+    cy = hc.height - size * 17.5 - 20;
+  }
 
   function heartPath(ctx, scale, offX, offY) {
     ctx.beginPath();
@@ -786,8 +786,8 @@ function initDrawHeart() {
     hCtx.stroke();
     lastPos = {x, y};
 
-    // The mathematical perimeter of this heart is ~101.8 * size. Require 75% of it to be generous.
-    if(drawnLength > 100 * size * 0.75) { 
+    // Require them to draw roughly the perimeter of the heart
+    if(drawnLength > Math.min(window.innerWidth, window.innerHeight) * 0.45) { 
       drawingHeart = false;
       hc.style.pointerEvents = 'none'; 
       hc.classList.add('heart-explode');
