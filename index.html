@@ -870,19 +870,31 @@ function startMemoryStream() {
       p.progress = 0; p.speed = rand(0.008, 0.015);
     });
 
+    // Show the Gift button after photos settle
     setTimeout(() => {
-      switchScreen('screen34', 'screen5');
-      photoObjects.forEach(p => {
-        p.startX = p.targetX; p.startY = p.targetY;
-        p.startW = p.targetW; p.startH = p.targetH;
-        p.startA = p.targetA; p.targetA = 0;
-        p.progress = 0; p.speed = 0.02;
-      });
-      initScreen5();
-    }, 4500);
+      $('btnGift').style.opacity = 1;
+      $('btnGift').style.pointerEvents = 'auto';
+    }, 1500);
 
   }, 6500);
 }
+
+// Attach event listener for the gift button to transition to screen 5
+$('btnGift').addEventListener('click', () => {
+  $('btnGift').style.opacity = 0;
+  $('btnGift').style.pointerEvents = 'none';
+  
+  switchScreen('screen3', 'screen5');
+  
+  photoObjects.forEach(p => {
+    p.startX = p.targetX; p.startY = p.targetY;
+    p.startW = p.targetW; p.startH = p.targetH;
+    p.startA = p.targetA; p.targetA = 0;
+    p.progress = 0; p.speed = 0.02;
+  });
+  
+  initScreen5();
+});
 
 // --- Screen 5: Final Chat & CGV Voucher ---
 function initScreen5() {
