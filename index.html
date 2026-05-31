@@ -710,13 +710,17 @@ function initDrawHeart() {
   const hc = $('drawHeartCanvas');
   const hCtx = hc.getContext('2d');
   hc.width = window.innerWidth; hc.height = window.innerHeight;
-  const size = Math.min(window.innerWidth, window.innerHeight) * 0.008; 
+  // Make heart slightly smaller on desktop to fit nicely with the sphere
+  const size = Math.min(window.innerWidth, window.innerHeight) * (window.innerWidth > 768 ? 0.006 : 0.008); 
   
   const cx = hc.width/2;
-  let cy = hc.height/2 + (window.innerWidth > 768 ? 150 : 50); 
-  // Ensure the heart doesn't get cut off at the bottom of the screen
-  if (cy + size * 20 > hc.height) {
-    cy = hc.height - size * 22;
+  // Move it closer to the center on desktop
+  let cy = hc.height/2 + (window.innerWidth > 768 ? 80 : 50); 
+  
+  // Guarantee padding from bottom edge
+  const maxHeartY = cy + size * 17.5; 
+  if (maxHeartY > hc.height - 20) {
+    cy = hc.height - size * 17.5 - 20;
   }
 
   function heartPath(ctx, scale, offX, offY) {
